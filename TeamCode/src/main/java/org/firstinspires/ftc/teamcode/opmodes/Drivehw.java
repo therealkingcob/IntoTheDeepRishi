@@ -6,47 +6,37 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.utils.priority.HardwareQueue;
 import org.firstinspires.ftc.teamcode.utils.priority.PriorityMotor;
+import org.firstinspires.ftc.teamcode.Robot;
 
 public class Drivehw extends LinearOpMode {
     @Override
 
     public void runOpMode() throws InterruptedException {
         //create motors
+        //use hardwareMap
+        Robot robot = new Robot(hardwareMap);
 
-        PriorityMotor leftFront;
-        PriorityMotor leftRear;
-        PriorityMotor rightRear;
-        PriorityMotor rightFront;
-        final HardwareQueue hardwareQueue;
-
-
-        HardwareMap hardwareMap = robot.hardwareMap;
-        this.hardwareQueue = robot.hardwareQueue;
-
-
-
-        leftFront = new PriorityMotor(
+        PriorityMotor leftFront = new PriorityMotor(
                 hardwareMap.get(DcMotorEx.class, "leftFront"),
                 "leftFront",
                 4, 5, 1.0, sensors
         );
-
-        leftRear = new PriorityMotor(
+        PriorityMotor leftRear = new PriorityMotor(
                 hardwareMap.get(DcMotorEx.class, "leftRear"),
                 "leftRear",
                 4, 5, -1.0, sensors
-        );
-        rightRear = new PriorityMotor(
+        );;
+        PriorityMotor rightRear = new PriorityMotor(
                 hardwareMap.get(DcMotorEx.class, "rightRear"),
                 "rightRear",
                 4, 5, sensors
-        );
-        rightFront = new PriorityMotor(
+        );;
+        PriorityMotor rightFront = new PriorityMotor(
                 hardwareMap.get(DcMotorEx.class, "rightFront"),
                 "rightFront",
                 4, 5, sensors
         );
-        //use hardware map
+
 
         //init
 
@@ -60,7 +50,7 @@ public class Drivehw extends LinearOpMode {
 
         while(opModeIsActive()) {
             //set values from gamepad
-            double y = gamepad1.left_stick_y;
+            double y = -gamepad1.left_stick_y;
             double x = gamepad1.left_stick_x;
             double heading = gamepad1.right_stick_x;
             //calculate power for each motor
@@ -68,8 +58,11 @@ public class Drivehw extends LinearOpMode {
             double rightFrontPower = y -x - heading;
             double leftRearPower = y - x - heading;
             double rightRearPower = y + x - heading;
-
-            setPowers(leftFrontPower, leftRearPower, rightFrontPower, rightRearPower);
+            leftFront.setTargetPower(leftFrontPower);
+            rightFront.setTargetPower(rightFrontPower);
+            leftRear.setTargetPower(leftRearPower);
+            rightRear.setTargetPower(rightRearPower);
+            //setPowers(leftFrontPower, leftRearPower, rightFrontPower, rightRearPower);
         }
 
     }
