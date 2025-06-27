@@ -56,12 +56,7 @@ public class Drivehw extends LinearOpMode {
         //left is magnitude of power
         //right is for turning
 
-        public void setPowers(double lF, double lR, double rF, double rR) {
-            leftFront.setTargetPower(lF);
-            leftRear.setTargetPower(lR);
-            rightRear.setTargetPower(rR);
-            rightFront.setTargetPower(rF);
-        }
+
 
         while(opModeIsActive()) {
             //set values from gamepad
@@ -74,12 +69,17 @@ public class Drivehw extends LinearOpMode {
             double leftRearPower = y - x - heading;
             double rightRearPower = y + x - heading;
 
-            setpowers(leftFrontPower, leftRearPower, rightFrontPower, rightRearPower);
+            setPowers(leftFrontPower, leftRearPower, rightFrontPower, rightRearPower);
         }
 
     }
 
-
+    private void setPowers(double leftFrontPower, double leftRearPower, double rightFrontPower, double rightRearPower) {
+        leftFront.setTargetPower(leftFrontPower);
+        leftRear.setTargetPower(leftRearPower);
+        rightRear.setTargetPower(rightFrontPower);
+        rightFront.setTargetPower(rightRearPower);
+    }
 
 
 }
