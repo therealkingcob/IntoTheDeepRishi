@@ -15,6 +15,7 @@ public class Drivehw extends LinearOpMode {
         //create motors
         //use hardwareMap
         Robot robot = new Robot(hardwareMap);
+        HardwareQueue hardwareQueue = new HardwareQueue();
 
         PriorityMotor leftFront = new PriorityMotor(
                 hardwareMap.get(DcMotorEx.class, "leftFront"),
@@ -25,17 +26,22 @@ public class Drivehw extends LinearOpMode {
                 hardwareMap.get(DcMotorEx.class, "leftRear"),
                 "leftRear",
                 4, 5, -1.0, sensors
-        );;
+        );
         PriorityMotor rightRear = new PriorityMotor(
                 hardwareMap.get(DcMotorEx.class, "rightRear"),
                 "rightRear",
                 4, 5, sensors
-        );;
+        );
         PriorityMotor rightFront = new PriorityMotor(
                 hardwareMap.get(DcMotorEx.class, "rightFront"),
                 "rightFront",
                 4, 5, sensors
         );
+        
+        hardwareQueue.addDevice(leftFront);
+        hardwareQueue.addDevice(leftRear);
+        hardwareQueue.addDevice(rightRear);
+        hardwareQueue.addDevice(rightFront);
 
 
         //init
@@ -46,18 +52,25 @@ public class Drivehw extends LinearOpMode {
         //left is magnitude of power
         //right is for turning
 
+        double y = -gamepad1.left_stick_y;
+        double x = gamepad1.left_stick_x;
+        double heading = gamepad1.right_stick_x;
+
+        double rightRearPower;
+        double leftRearPower;
+        double rightFrontPower;
+        double leftFrontPower;
+
 
 
         while(opModeIsActive()) {
             //set values from gamepad
-            double y = -gamepad1.left_stick_y;
-            double x = gamepad1.left_stick_x;
-            double heading = gamepad1.right_stick_x;
+
             //calculate power for each motor
-            double leftFrontPower = y + x + heading;
-            double rightFrontPower = y -x - heading;
-            double leftRearPower = y - x - heading;
-            double rightRearPower = y + x - heading;
+            leftFrontPower = y + x + heading;
+            rightFrontPower = y -x - heading;
+            leftRearPower = y - x - heading;
+            rightRearPower = y + x - heading;
             leftFront.setTargetPower(leftFrontPower);
             rightFront.setTargetPower(rightFrontPower);
             leftRear.setTargetPower(leftRearPower);
@@ -67,12 +80,7 @@ public class Drivehw extends LinearOpMode {
 
     }
 
-    private void setPowers(double leftFrontPower, double leftRearPower, double rightFrontPower, double rightRearPower) {
-        leftFront.setTargetPower(leftFrontPower);
-        leftRear.setTargetPower(leftRearPower);
-        rightRear.setTargetPower(rightFrontPower);
-        rightFront.setTargetPower(rightRearPower);
-    }
+    
 
 
 }
